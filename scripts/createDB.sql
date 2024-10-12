@@ -1,82 +1,105 @@
-CREATE DATABASE IF NOT EXISTS hospitaldb;
+--CREATE DATABASE IF NOT EXISTS hospitaldb;
+
 USE hospitaldb;
 
--- Tabla de Especialidades
-CREATE TABLE Especialidades (
-    ID_ESPECIALIDAD INT AUTO_INCREMENT PRIMARY KEY, -- Llave primaria
-    ESPECIALIDAD VARCHAR(100) NOT NULL
-);
+-- Tabla de Especialidad
+CREATE TABLE
+    especialidad (
+        id_especialidad INT AUTO_INCREMENT PRIMARY KEY, -- Llave primaria
+        nombre_especialidad VARCHAR(100) NOT NULL UNIQUE -- Nombre único de la especialidad
+    );
 
--- Tabla de Doctores
-CREATE TABLE Doctores (
-    ID_DOCTOR INT AUTO_INCREMENT PRIMARY KEY, -- Llave primaria
-    NOMBRES VARCHAR(100) NOT NULL,
-    APELLIDOS VARCHAR(100) NOT NULL,
-    ID_ESPECIALIDAD INT, -- Llave foránea hacia la tabla Especialidades
-    TELEFONO VARCHAR(15),
-    EMAIL VARCHAR(100),
-    TURNO VARCHAR(50),
-    FOREIGN KEY (ID_ESPECIALIDAD) REFERENCES Especialidades(ID_ESPECIALIDAD)
-);
+-- Tabla de Doctor
+CREATE TABLE
+    doctor (
+        id_doctor INT AUTO_INCREMENT PRIMARY KEY, -- Llave primaria
+        nombres VARCHAR(100) NOT NULL,
+        apellidos VARCHAR(100) NOT NULL,
+        id_especialidad INT, -- Llave foránea hacia la tabla Especialidad
+        telefono VARCHAR(15),
+        email VARCHAR(100) UNIQUE, -- Correo único para cada doctor
+        contrasena VARCHAR(15),
+        FOREIGN KEY (id_especialidad) REFERENCES especialidad (id_especialidad)
+    );
 
--- Tabla de Pacientes
-CREATE TABLE Pacientes (
-    ID_PACIENTE INT AUTO_INCREMENT PRIMARY KEY, -- Llave primaria
-    NOMBRE VARCHAR(100) NOT NULL,
-    NACIMIENTO DATE NOT NULL,
-    SEXO ENUM('M', 'F') NOT NULL,
-    DIRECCION VARCHAR(255),
-    TELEFONO VARCHAR(15),
-    EMAIL VARCHAR(100),
-    SEGURO VARCHAR(100)
-);
+-- Tabla de Paciente
+CREATE TABLE
+    paciente (
+        id_paciente INT AUTO_INCREMENT PRIMARY KEY, -- Llave primaria
+        nombre VARCHAR(100) NOT NULL,
+        fecha_nacimiento DATE NOT NULL,
+        sexo ENUM ('M', 'F') NOT NULL,
+        direccion VARCHAR(255),
+        telefono VARCHAR(15),
+        email VARCHAR(100) UNIQUE, -- Correo único para cada paciente
+        seguro VARCHAR(100)
+    );
 
--- Tabla de Historiales
-CREATE TABLE Historiales (
-    ID_HISTORIAL INT AUTO_INCREMENT PRIMARY KEY, -- Llave primaria
-    ID_PACIENTE INT, -- Llave foránea hacia la tabla Pacientes
-    ID_DOCTOR INT, -- Llave foránea hacia la tabla Doctores
-    FECHA DATE NOT NULL,
-    DESCRIPCION TEXT,
-    TRATAMIENTO TEXT,
-    FOREIGN KEY (ID_PACIENTE) REFERENCES Pacientes(ID_PACIENTE),
-    FOREIGN KEY (ID_DOCTOR) REFERENCES Doctores(ID_DOCTOR)
-);
+-- Tabla de Historial
+CREATE TABLE
+    historial (
+        id_historial INT AUTO_INCREMENT PRIMARY KEY, -- Llave primaria
+        id_paciente INT, -- Llave foránea hacia la tabla Paciente
+        id_doctor INT, -- Llave foránea hacia la tabla Doctor
+        fecha DATE NOT NULL,
+        descripcion TEXT,
+        tratamiento TEXT,
+        FOREIGN KEY (id_paciente) REFERENCES paciente (id_paciente),
+        FOREIGN KEY (id_doctor) REFERENCES doctor (id_doctor)
+    );
 
--- Tabla de Areas
-CREATE TABLE Areas (
-    ID_AREA INT AUTO_INCREMENT PRIMARY KEY, -- Llave primaria
-    AREA VARCHAR(100) NOT NULL
-);
+-- Tabla de Area
+CREATE TABLE
+    area (
+        id_area INT AUTO_INCREMENT PRIMARY KEY, -- Llave primaria
+        nombre_area VARCHAR(100) NOT NULL UNIQUE -- Nombre único del área
+    );
 
--- Tabla de Camillas
-CREATE TABLE Camillas (
-    ID_CAMILLA INT AUTO_INCREMENT PRIMARY KEY, -- Llave primaria
-    NUMERO INT NOT NULL,
-    ID_AREA INT, -- Llave foránea hacia la tabla Areas
-    ESTADO ENUM('DISPONIBLE', 'OCUPADA') NOT NULL,
-    FOREIGN KEY (ID_AREA) REFERENCES Areas(ID_AREA)
-);
+-- Tabla de Camilla
+CREATE TABLE
+    camilla (
+        id_camilla INT AUTO_INCREMENT PRIMARY KEY, -- Llave primaria
+        numero INT NOT NULL,
+        id_area INT, -- Llave foránea hacia la tabla Area
+        estado ENUM ('disponible', 'ocupada') NOT NULL,
+        FOREIGN KEY (id_area) REFERENCES area (id_area),
+        UNIQUE (numero, id_area) -- El número de camilla debe ser único por área
+    );
 
--- Tabla de Citas Médicas
-CREATE TABLE Citas_Medicas (
-    ID_CITA INT AUTO_INCREMENT PRIMARY KEY, -- Llave primaria
-    ID_PACIENTE INT, -- Llave foránea hacia la tabla Pacientes
-    ID_DOCTOR INT, -- Llave foránea hacia la tabla Doctores
-    FECHA_HORA DATETIME NOT NULL,
-    RAZON TEXT,
-    ESTADO ENUM('PENDIENTE', 'COMPLETADA', 'CANCELADA') NOT NULL,
-    FOREIGN KEY (ID_PACIENTE) REFERENCES Pacientes(ID_PACIENTE),
-    FOREIGN KEY (ID_DOCTOR) REFERENCES Doctores(ID_DOCTOR)
-);
+-- Tabla de Cita Médica
+CREATE TABLE
+    cita_medica (
+        id_cita INT AUTO_INCREMENT PRIMARY KEY, -- Llave primaria
+        id_paciente INT, -- Llave foránea hacia la tabla Paciente
+        id_doctor INT, -- Llave foránea hacia la tabla Doctor
+        fecha_hora DATETIME NOT NULL,
+        razon TEXT,
+        estado ENUM ('pendiente', 'completada', 'cancelada') NOT NULL,
+        FOREIGN KEY (id_paciente) REFERENCES paciente (id_paciente),
+        FOREIGN KEY (id_doctor) REFERENCES doctor (id_doctor)
+    );
 
--- Tabla de Ingresos
-CREATE TABLE Ingresos (
-    ID_INGRESO INT AUTO_INCREMENT PRIMARY KEY, -- Llave primaria
-    ID_PACIENTE INT, -- Llave foránea hacia la tabla Pacientes
-    ID_CAMILLA INT, -- Llave foránea hacia la tabla Camillas
-    ID_DOCTOR INT, -- Llave foránea hacia la tabla Doctores
-    FOREIGN KEY (ID_PACIENTE) REFERENCES Pacientes(ID_PACIENTE),
-    FOREIGN KEY (ID_CAMILLA) REFERENCES Camillas(ID_CAMILLA),
-    FOREIGN KEY (ID_DOCTOR) REFERENCES Doctores(ID_DOCTOR)
-);
+-- Tabla de Ingreso
+CREATE TABLE
+    ingreso (
+        id_ingreso INT AUTO_INCREMENT PRIMARY KEY, -- Llave primaria
+        id_paciente INT, -- Llave foránea hacia la tabla Paciente
+        id_camilla INT, -- Llave foránea hacia la tabla Camilla
+        id_doctor INT, -- Llave foránea hacia la tabla Doctor
+        FOREIGN KEY (id_paciente) REFERENCES paciente (id_paciente),
+        FOREIGN KEY (id_camilla) REFERENCES camilla (id_camilla),
+        FOREIGN KEY (id_doctor) REFERENCES doctor (id_doctor)
+    );
+
+CREATE TABLE
+    movimiento_paciente (
+        id_movimiento INT AUTO_INCREMENT PRIMARY KEY,
+        id_paciente INT NOT NULL,
+        id_area INT NOT NULL,
+        id_camilla INT NULL, -- Puede ser NULL si el paciente no usa camilla
+        hora_entrada DATETIME NOT NULL,
+        hora_salida DATETIME,
+        FOREIGN KEY (id_paciente) REFERENCES paciente (id_paciente),
+        FOREIGN KEY (id_area) REFERENCES area (id_area),
+        FOREIGN KEY (id_camilla) REFERENCES camilla (id_camilla)
+    );

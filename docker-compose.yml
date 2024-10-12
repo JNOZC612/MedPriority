@@ -23,7 +23,7 @@ services:
       - DB_HOST=db
       - DB_USER=root
       - DB_PASSWORD=root
-      - DB_NAME=prioritydb
+      - DB_NAME=hospitaldb
     depends_on:
       - db
 
@@ -32,7 +32,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: prioritydb
+      MYSQL_DATABASE: hospitaldb
     volumes:
       - db_data:/var/lib/mysql
       - ./scripts:/scripts
