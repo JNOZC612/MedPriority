@@ -8,7 +8,8 @@ VALUES
     ('Medicina Interna'),
     ('Radiología'),
     ('UCI'),
-    ('Laboratorio');
+    ('Laboratorio'),
+    ('ALTA');
 
 INSERT INTO
     especialidad (nombre_especialidad)
@@ -103,13 +104,13 @@ VALUES
     -- Camillas para Urgencias
     (1, 1, 'DISPONIBLE'),
     (2, 1, 'DISPONIBLE'),
-    (3, 1, 'OCUPADA'),
+    (3, 1, 'DISPONIBLE'),
     -- Camillas para Quirófano
     (4, 3, 'DISPONIBLE'),
     (5, 3, 'DISPONIBLE'),
     -- Camillas para UCI
     (6, 7, 'DISPONIBLE'),
-    (7, 7, 'OCUPADA'),
+    (7, 7, 'DISPONIBLE'),
     -- Camillas para Consulta Externa
     (8, 4, 'DISPONIBLE'),
     (9, 4, 'DISPONIBLE'),
