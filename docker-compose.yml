@@ -4,8 +4,10 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend:/app
+      - ./frontend/src:/app/src
+      #- ./frontend:/app
     environment:
+      - CHOKIDAR_USEPOLLING=true
       - NODE_ENV=development
 
   backend:
@@ -16,9 +18,11 @@ services:
     ports:
       - "3200:3200"
     volumes:
-      - ./backend:/app
+      - ./backend/src:/app/src
+      #- ./backend:/app
     command: npm run dev
     environment:
+      - CHOKIDAR_USEPOLLING=true
       - NODE_ENV=development
       - DB_HOST=db
       - DB_USER=root

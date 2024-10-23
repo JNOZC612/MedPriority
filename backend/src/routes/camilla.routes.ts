@@ -3,7 +3,9 @@ import { getCamillasArea } from "../config/database.config";
 const router = Router();
 router.get("/area", async (req: Request, res: Response) => {
     try {
-        const { id_area } = req.body;
+        const id_area = Number(req.query.id_area);
+        console.log(`BODY: ${req.url}`);
+        console.log(`IDA: ${req.query.id_area}`);
         if (!id_area) {
             return res.status(400).json({ message: "El Id del area es necesario" })
         }

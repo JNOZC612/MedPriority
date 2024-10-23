@@ -1,0 +1,68 @@
+.toolbar {
+  background-color: #256490;
+  color: #fff;
+  padding: 9px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.anchorTitle {
+  border-radius: 5px;
+  padding: 0px 20px;
+  margin: 10px 20px 10px 0px;
+  text-decoration: none;
+  color: white;
+  border: solid 2px;
+  border-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &:hover {
+    border: solid 2px;
+    box-shadow: 3px 3px 10px rgba(255, 255, 255, 0.7);
+  }
+
+  @media screen and (max-width: 600px) {
+    margin: 3px 6px;
+  }
+}
+
+.anchor {
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin: 10px 20px 10px 0px;
+  text-decoration: none;
+  color: white;
+  border: solid 2px;
+  border-color: transparent;
+
+  &:hover {
+    border: solid 2px;
+    box-shadow: 3px 3px 10px rgba(255, 255, 255, 0.7);
+  }
+
+  @media screen and (max-width: 600px) {
+    margin: 3px 6px;
+  }
+}
+
+.linkContainer {
+  display: flex;
+
+  @media screen and (max-width: 600px) {
+    flex-direction: column;
+  }
+}
+.circularImage {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-size: 90%;
+  margin-right: 10px;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 2px solid #ddd;
+  background-color: aliceblue;
+}

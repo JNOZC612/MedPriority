@@ -1,10 +1,27 @@
-import './App.css';
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
-import Dashboard from './dashboard';
+import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AdminMain from "./views/AdminMain";
+import Login from "./views/Login";
+import AdminDashBoard from "./views/AdminDashboard";
+//import React, { useState } from 'react';
+//import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+//import Dashboard from './dashboard';
 
 function App() {
-  const [username, setUsername] = useState('');
+  return (
+    <div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<AdminMain />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/admin/dashboard" element={<AdminDashBoard />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
+}
+export default App;
+/*const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
@@ -64,4 +81,4 @@ function AppWrapper() {
   );
 }
 
-export default AppWrapper;
+export default AppWrapper;*/

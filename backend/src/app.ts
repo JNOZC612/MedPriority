@@ -7,7 +7,7 @@ import pacienteRoutes from "./routes/paciente.routes";
 import movimientoRoutes from "./routes/movimientos.routes";
 import areasRoutes from "./routes/area.routes";
 import camillasRoutes from "./routes/camilla.routes";
-
+import sesionRoutes from "./routes/sesion.routes";
 const app: Application = express();
 app.use(cors({
   origin: serverConfig.cors.allowedOrigins,
@@ -22,4 +22,5 @@ app.use("/api/pacientes", pacienteRoutes);
 app.use("/api/movimiento", movimientoRoutes);
 app.use("/api/areas", areasRoutes);
 app.use("/api/camillas", camillasRoutes)
+app.use("/api/sesion", sesionRoutes);
 export default app;

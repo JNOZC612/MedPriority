@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.movil.activities.AdmitPatient
+import com.example.movil.activities.ViewPatient
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
@@ -30,6 +31,11 @@ class MainActivity : AppCompatActivity() {
         val register = findViewById<Button>(R.id.main_btnIngresarPaciente)
         register.setOnClickListener {
             val intent = Intent(this, AdmitPatient::class.java)
+            startActivity(intent)
+        }
+        val viewPatient = findViewById<Button>(R.id.main_btnVerPaciente);
+        viewPatient.setOnClickListener {
+            val intent = Intent(this, ViewPatient::class.java)
             startActivity(intent)
         }
     }

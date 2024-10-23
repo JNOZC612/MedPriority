@@ -2,6 +2,7 @@ package com.example.movil.activities
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -45,7 +46,7 @@ class AdmitPatient : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener {
-            onBackPressedDispatcher
+            onBackPressed()
         }
         val spinner = findViewById<Spinner>(R.id.admit_gender)
         val options = listOf("M", "F")
@@ -74,8 +75,9 @@ class AdmitPatient : AppCompatActivity() {
             sendPatientData(host)
         }
         findViewById<EditText>(R.id.admit_txt_datetime).setOnClickListener {
-            showDatePicker()
+            showDatePicker(R.id.admit_txt_datetime)
         }
+
     }
 
     private fun requestAreas(host: String) {
@@ -141,9 +143,16 @@ class AdmitPatient : AppCompatActivity() {
     }
 
     private fun requestCamillas(host: String, idArea: Number) {
+        Log.d("ID AREA", "."+idArea)
         val client = OkHttpClient()
+        /*val url = Uri.parse("$host/api/camillas/area")
+            .buildUpon()
+            .appendQueryParameter("id_area", idArea.toString())
+            .build().toString()*/
+        val url = "$host/api/camillas/area?id_area=$idArea";
         val request = Request.Builder()
-            .url("$host/api/camillas/area?id_area=$idArea")
+            //.url("$host/api/camillas/area?id_area=$idArea")
+            .url(url)
             .build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -217,7 +226,8 @@ class AdmitPatient : AppCompatActivity() {
         val telefono = txtPhone.text.toString()
         val seguro = txtInsurance.text.toString()
         val id_area = findViewById<Spinner>(R.id.admit_area).selectedItemPosition + 1
-        //val id_camilla = findViewById<Spinner>(R.id.admit_camilla).selectedItem
+        val numero_camilla = findViewById<Spinner>(R.id.admit_camilla).selectedItem
+        Log.d("CAMILLA NO", "."+numero_camilla)
         val datetime = txtDatetime.text.toString()
 
         val jsonObject = JSONObject().apply {
@@ -229,7 +239,7 @@ class AdmitPatient : AppCompatActivity() {
             put("telefono", telefono)
             put("seguro", seguro)
             put("area", id_area)
-            //put("camilla", id_camilla)
+            put("camilla", numero_camilla)
             put("hora_entrada", datetime)
         }
 
@@ -272,7 +282,7 @@ class AdmitPatient : AppCompatActivity() {
         })
     }
 
-    private fun showDatePicker() {
+    private fun showDatePicker(view:Int) {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -281,13 +291,13 @@ class AdmitPatient : AppCompatActivity() {
         val datePickerDialog =
             DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
                 // Después de seleccionar la fecha, muestra el TimePicker
-                showTimePicker(selectedYear, selectedMonth, selectedDay)
+                showTimePicker(selectedYear, selectedMonth, selectedDay, view)
             }, year, month, day)
 
         datePickerDialog.show()
     }
 
-    private fun showTimePicker(year: Int, month: Int, day: Int) {
+    private fun showTimePicker(year: Int, month: Int, day: Int, view:Int) {
         val calendar = Calendar.getInstance()
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
@@ -303,7 +313,7 @@ class AdmitPatient : AppCompatActivity() {
             val formattedDateTime = format.format(selectedDateTime.time)
 
             // Muestra la fecha y hora en el TextView
-            val dtt = findViewById<EditText>(R.id.admit_txt_datetime)
+            val dtt = findViewById<EditText>(view)
             dtt.setText(formattedDateTime)
 
             // Aquí puedes usar formattedDateTime para insertar en MySQL

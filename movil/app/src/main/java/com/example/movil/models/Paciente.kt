@@ -1,7 +1,7 @@
 package com.example.movil.models
 
 data class Paciente(
-    val id: Number?,
+    val id_paciente: Number?,
     val nombre: String,
     val fecha_nacimiento: String,
     val sexo: String,

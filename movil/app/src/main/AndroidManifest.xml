@@ -15,9 +15,13 @@
         android:theme="@style/Theme.Movil"
         tools:targetApi="31">
         <activity
+            android:name=".activities.ViewPatient"
+            android:exported="false"
+            android:screenOrientation="landscape" />
+        <activity
             android:name=".activities.AdmitPatient"
-            android:screenOrientation="landscape"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
